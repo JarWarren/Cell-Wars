@@ -59,5 +59,4 @@ extension ViewController: TarBlobViewDelegate {
         tarBlobView.backgroundColor = UIColor.systemBlue
     }
     
-    
 }
