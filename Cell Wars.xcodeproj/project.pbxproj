@@ -11,10 +11,11 @@
 		7E9FA42523EB3D11006F9F20 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9FA42423EB3D11006F9F20 /* SceneDelegate.swift */; };
 		7E9FA42723EB3D11006F9F20 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9FA42623EB3D11006F9F20 /* ViewController.swift */; };
 		7E9FA42A23EB3D11006F9F20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E9FA42823EB3D11006F9F20 /* Main.storyboard */; };
-		7E9FA42D23EB3D11006F9F20 /* Cell_Wars.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7E9FA42B23EB3D11006F9F20 /* Cell_Wars.xcdatamodeld */; };
+		7E9FA42D23EB3D11006F9F20 /* Tar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7E9FA42B23EB3D11006F9F20 /* Tar.xcdatamodeld */; };
 		7E9FA42F23EB3D12006F9F20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E9FA42E23EB3D12006F9F20 /* Assets.xcassets */; };
 		7E9FA43223EB3D12006F9F20 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E9FA43023EB3D12006F9F20 /* LaunchScreen.storyboard */; };
 		7EBB362223EB40E500819F34 /* Tar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB362123EB40E500819F34 /* Tar.swift */; };
+		7EBB362423EB458200819F34 /* TarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB362323EB458200819F34 /* TarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		7E9FA43123EB3D12006F9F20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7E9FA43323EB3D12006F9F20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EBB362123EB40E500819F34 /* Tar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tar.swift; sourceTree = "<group>"; };
+		7EBB362323EB458200819F34 /* TarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +63,9 @@
 			isa = PBXGroup;
 			children = (
 				7E9FA42823EB3D11006F9F20 /* Main.storyboard */,
-				7EBB362023EB401100819F34 /* Views */,
 				7EBB361F23EB3FFF00819F34 /* Models */,
+				7EBB362023EB401100819F34 /* Views */,
+				7EBB362523EB458900819F34 /* Controllers */,
 				7EBB361E23EB3FF300819F34 /* Resources */,
 			);
 			path = "Cell Wars";
@@ -83,7 +86,7 @@
 		7EBB361F23EB3FFF00819F34 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				7E9FA42B23EB3D11006F9F20 /* Cell_Wars.xcdatamodeld */,
+				7E9FA42B23EB3D11006F9F20 /* Tar.xcdatamodeld */,
 				7EBB362123EB40E500819F34 /* Tar.swift */,
 			);
 			path = Models;
@@ -95,6 +98,14 @@
 				7E9FA42623EB3D11006F9F20 /* ViewController.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7EBB362523EB458900819F34 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				7EBB362323EB458200819F34 /* TarController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,8 +204,9 @@
 				7E9FA42723EB3D11006F9F20 /* ViewController.swift in Sources */,
 				7E9FA42323EB3D11006F9F20 /* AppDelegate.swift in Sources */,
 				7EBB362223EB40E500819F34 /* Tar.swift in Sources */,
-				7E9FA42D23EB3D11006F9F20 /* Cell_Wars.xcdatamodeld in Sources */,
+				7E9FA42D23EB3D11006F9F20 /* Tar.xcdatamodeld in Sources */,
 				7E9FA42523EB3D11006F9F20 /* SceneDelegate.swift in Sources */,
+				7EBB362423EB458200819F34 /* TarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +352,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HVDL2745KX;
-				INFOPLIST_FILE = "Cell Wars/Info.plist";
+				INFOPLIST_FILE = "Cell Wars/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -358,7 +370,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HVDL2745KX;
-				INFOPLIST_FILE = "Cell Wars/Info.plist";
+				INFOPLIST_FILE = "Cell Wars/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -394,13 +406,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		7E9FA42B23EB3D11006F9F20 /* Cell_Wars.xcdatamodeld */ = {
+		7E9FA42B23EB3D11006F9F20 /* Tar.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				7E9FA42C23EB3D11006F9F20 /* Cell_Wars.xcdatamodel */,
 			);
 			currentVersion = 7E9FA42C23EB3D11006F9F20 /* Cell_Wars.xcdatamodel */;
-			path = Cell_Wars.xcdatamodeld;
+			path = Tar.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
