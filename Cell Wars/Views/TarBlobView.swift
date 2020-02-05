@@ -14,7 +14,18 @@ protocol TarBlobViewDelegate: class {
 class TarBlobView: UIView {
 
     let index: TarIndex
-    var tar: Tar
+    var tar: Tar {
+        didSet {
+            switch tar.faction {
+            case .blue:
+                self.backgroundColor = .systemBlue
+            case .pink:
+                self.backgroundColor = .systemPink
+            default:
+                self.backgroundColor = .clear
+            }
+        }
+    }
     weak var delegate: TarBlobViewDelegate?
 
     init(_ rect: CGRect, index: TarIndex) {
