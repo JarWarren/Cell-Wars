@@ -58,16 +58,40 @@
 		7E9FA42123EB3D11006F9F20 /* Cell Wars */ = {
 			isa = PBXGroup;
 			children = (
+				7E9FA42823EB3D11006F9F20 /* Main.storyboard */,
+				7EBB362023EB401100819F34 /* Views */,
+				7EBB361F23EB3FFF00819F34 /* Models */,
+				7EBB361E23EB3FF300819F34 /* Resources */,
+			);
+			path = "Cell Wars";
+			sourceTree = "<group>";
+		};
+		7EBB361E23EB3FF300819F34 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				7E9FA42223EB3D11006F9F20 /* AppDelegate.swift */,
 				7E9FA42423EB3D11006F9F20 /* SceneDelegate.swift */,
-				7E9FA42623EB3D11006F9F20 /* ViewController.swift */,
-				7E9FA42823EB3D11006F9F20 /* Main.storyboard */,
 				7E9FA42E23EB3D12006F9F20 /* Assets.xcassets */,
 				7E9FA43023EB3D12006F9F20 /* LaunchScreen.storyboard */,
 				7E9FA43323EB3D12006F9F20 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		7EBB361F23EB3FFF00819F34 /* Models */ = {
+			isa = PBXGroup;
+			children = (
 				7E9FA42B23EB3D11006F9F20 /* Cell_Wars.xcdatamodeld */,
 			);
-			path = "Cell Wars";
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7EBB362023EB401100819F34 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E9FA42623EB3D11006F9F20 /* ViewController.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
