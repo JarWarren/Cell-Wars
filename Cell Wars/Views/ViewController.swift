@@ -44,7 +44,7 @@ class ViewController: UIViewController {
 extension ViewController: TarBlobViewDelegate {
     func didTapTarBlob(tarBlobView: TarBlobView) {
         print("tapped \(tarBlobView.index)")
-        if tarController.selectedTar == nil {
+        if tarController.selectedIndex == nil {
             let viableMoves = tarController.getViableMoves(index: tarBlobView.index)
             
             for tarBlob in viableMoves.duplicate {

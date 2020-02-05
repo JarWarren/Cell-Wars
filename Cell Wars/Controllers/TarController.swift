@@ -22,31 +22,29 @@ class TarController {
     
     // MARK: Properties
     
-    var selectedTar: Tar?
     var selectedIndex: TarIndex?
     private var filledSquareCount = 63
     
     weak var delegate: TarControllerDelegate?
     var board: [String: Tar] = [:]
-    var currentPlayerTurn: Faction = .blue
+    var currentPlayer: Faction = .blue
     
     // MARK: Gameplay Methods
     
     /// Fills `board` with 64 empty `Tar`.
     func newGame() {
-        selectedTar = nil
         selectedIndex = nil
-        currentPlayerTurn = .blue
+        currentPlayer = .blue
         filledSquareCount = 4
         for row in 0...7 {
             for column in 0...7 {
                 board["\(row)|\(column)"] = Tar()
             }
         }
-        board["\(0)|\(0)"]?.faction = .blue
-        board["\(0)|\(7)"]?.faction = .blue
-        board["\(7)|\(0)"]?.faction = .pink
-        board["\(7)|\(7)"]?.faction = .pink
+        board["\((0,0))"]?.faction = .blue
+        board["\((0,7))"]?.faction = .blue
+        board["\((7,0))"]?.faction = .pink
+        board["\((7,7))"]?.faction = .pink
     }
     
     /// Pass in a `(row, column)` and receive an array `[(row, column)]` for all viable moves.
@@ -59,7 +57,7 @@ class TarController {
         var teleportingMoves: [TarIndex] = []
         
         // hold a reference to the selected tar
-        selectedTar = board["\(index.row)|\(index.column)"]
+        selectedIndex = index
         
         // search 20+ nearest squares for emptiness
         for row in (index.row - 2)...(index.row + 2) {
@@ -110,29 +108,54 @@ class TarController {
     
     /// Nils out the currently selected Tar.
     func cancelMove() {
-        selectedTar = nil
+        selectedIndex = nil
     }
     
     // MARK: Private Methods
     
-    private func teleportTar(to: TarIndex) {
+    private func teleportTar(to targetIndex: TarIndex) {
+        
+        // Cannot perform move if there isn't a previously selected tar
+        guard let selectedIndex = selectedIndex else { return }
+        
+        // remove tar from selected index
+        board["\(selectedIndex)"]?.faction = .none
+        
+        // add tar to target index
+        board["\(targetIndex)"]?.faction = currentPlayer
+        
+        // capture adjacents to target index
+        captureAdjacents(index: targetIndex)
+    }
+    
+    private func duplicateTar(at targetIndex: TarIndex) {
+        
+        // add tar to target index
+        board["\(targetIndex)"]?.faction = currentPlayer
+        
+        // capture adjacents to the target index
+        captureAdjacents(index: targetIndex)
         
     }
     
-    private func duplicateTar(at: TarIndex) {
+    private func captureAdjacents(index: TarIndex) {
         
-        captureAdjacents()
+        // set tar color to current
         
-    }
-    
-    private func captureAdjacents() {
-        
+        // Check for victory
         checkForWin()
     }
     
-    private func checkForWin() {
-        selectedTar = nil
+    private func nextTurn() {
+        
+        // Reset selected index for next turn
         selectedIndex = nil
+        
+        // Change current player
+        currentPlayer = currentPlayer == .blue ? .pink : .blue
+    }
+    
+    private func checkForWin() {
         if filledSquareCount == 64 {
             // Count how many tars are blue (out of 64)
             let blueTars = board.values.filter { $0.faction == .some(.blue) }
@@ -150,6 +173,8 @@ class TarController {
             default:
                 delegate?.gameDidEnd(winningFaction: .blue)
             }
+        } else {
+            nextTurn()
         }
     }
 }
