@@ -11,9 +11,11 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var gameBoard: UIView!
+    @IBOutlet weak var blueScore: UILabel!
+    @IBOutlet weak var pinkScore: UILabel!
     
     let numViewPerRow = 8
-    var cells = [String: UIView]()
+    var cells = [String: TarBlobView]()
     var bluesTurn: Bool = true
     let tarController = TarController()
     
@@ -35,16 +37,29 @@ class ViewController: UIViewController {
                 gameBoard.addSubview(tarBlob)
                 let key = "\((row, column))"
                 cells[key] = tarBlob
-                
             }
         }
+        
+        for tar in tarController.board {
+            switch tar.value.faction {
+            case .blue:
+                cells[tar.key]?.backgroundColor = .systemBlue
+            case .pink:
+                cells[tar.key]?.backgroundColor = .systemPink
+            default:
+                cells[tar.key]?.backgroundColor = .clear
+            }
+        }
+    }
+    @IBAction func restartPressed(_ sender: Any) {
+        newGame()
     }
 }
 
 extension ViewController: TarBlobViewDelegate {
     func didTapTarBlob(tarBlobView: TarBlobView) {
-        print("tapped \(tarBlobView.index)")
-        if tarController.selectedTar == nil {
+        print(tarBlobView.index)
+        if tarController.selectedIndex == nil {
             let viableMoves = tarController.getViableMoves(index: tarBlobView.index)
             
             for tarBlob in viableMoves.duplicate {
@@ -56,7 +71,7 @@ extension ViewController: TarBlobViewDelegate {
         } else {
             if tarBlobView.backgroundColor == .lightGray && tarBlobView.backgroundColor == .darkGray {
                 for tarBlob in tarController.moveTo(tarBlobView.index) {
-                    cells["\(tarBlob.index)"].tar = tarBlob.tar
+                    cells["\(tarBlob.index)"]?.tar = tarBlob.tar
                 }
             }
         }
