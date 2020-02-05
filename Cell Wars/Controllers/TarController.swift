@@ -23,6 +23,7 @@ class TarController {
     // MARK: Properties
     
     var selectedTar: Tar?
+    var selectedIndex: TarIndex?
     private var filledSquareCount = 63
     
     weak var delegate: TarControllerDelegate?
@@ -34,6 +35,7 @@ class TarController {
     /// Fills `board` with 64 empty `Tar`.
     func newGame() {
         selectedTar = nil
+        selectedIndex = nil
         currentPlayerTurn = .blue
         filledSquareCount = 4
         for row in 0...7 {
@@ -52,6 +54,7 @@ class TarController {
         // hold all viable moves
         var viableMoves: [TarIndex] = []
         
+        // moves filtered by type
         var duplicatingMoves: [TarIndex] = []
         var teleportingMoves: [TarIndex] = []
         
@@ -88,9 +91,21 @@ class TarController {
         return (duplicatingMoves, teleportingMoves)
     }
     
-    /// Takes in a `(row, column)`and performs either duplication or teleportation.  Returns an array `[(row, column)]` of squares that need to be updated.
-    func moveTo(_ index: TarIndex) {
+    /// Takes in a `(row, column)`and performs either duplication or teleportation.  Returns an array `[(TarIndex, Tar)]` for squares that need to be updated.
+    func moveTo(_ targetIndex: TarIndex) -> [(index: TarIndex, tar: Tar)] {
         
+        // Cannot perform move if there isn't a previously selected tar
+        guard let selectedIndex = selectedIndex else { return [] }
+        
+        // Check whether the move is within duplicating range or Tar needs to teleport.
+        if abs(targetIndex.row - selectedIndex.row) < 2 && abs(targetIndex.column - selectedIndex.column) < 2 {
+            duplicateTar(at: targetIndex)
+            
+        } else {
+            teleportTar(to: targetIndex)
+        }
+        
+        return []
     }
     
     /// Nils out the currently selected Tar.
@@ -100,7 +115,7 @@ class TarController {
     
     // MARK: Private Methods
     
-    private func moveTar(to: TarIndex) {
+    private func teleportTar(to: TarIndex) {
         
     }
     
@@ -117,6 +132,7 @@ class TarController {
     
     private func checkForWin() {
         selectedTar = nil
+        selectedIndex = nil
         if filledSquareCount == 64 {
             // Count how many tars are blue (out of 64)
             let blueTars = board.values.filter { $0.faction == .some(.blue) }
