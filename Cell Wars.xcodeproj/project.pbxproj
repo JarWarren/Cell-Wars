@@ -339,8 +339,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HVDL2745KX;
-				INFOPLIST_FILE = "Cell Wars/Info.plist";
+				DEVELOPMENT_TEAM = UCL5625TDG;
+				INFOPLIST_FILE = "$(SRCROOT)/Cell Wars/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -357,8 +357,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = HVDL2745KX;
-				INFOPLIST_FILE = "Cell Wars/Info.plist";
+				DEVELOPMENT_TEAM = UCL5625TDG;
+				INFOPLIST_FILE = "$(SRCROOT)/Cell Wars/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
