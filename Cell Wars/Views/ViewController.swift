@@ -22,18 +22,14 @@ class ViewController: UIViewController {
         gameBoard.clipsToBounds = true
         let width = (gameBoard.frame.width) / CGFloat(numViewPerRow)
         
-        for j in 0...numViewPerRow {
-            for i in 0...numViewPerRow {
-                let tarBlob = UIView()
-                tarBlob.backgroundColor = .white
-                tarBlob.frame = CGRect(x: CGFloat(i) * width, y: CGFloat(j) * width, width: width, height: width)
-                tarBlob.layer.borderWidth = 1
-                tarBlob.layer.borderColor = UIColor.white.cgColor
-                tarBlob.layer.cornerRadius = tarBlob.frame.height / 2
-                tarBlob.clipsToBounds = true
+        for row in 0...numViewPerRow {
+            for column in 0...numViewPerRow {
+                let rect = CGRect(x: CGFloat(column) * width, y: CGFloat(row) * width, width: width, height: width)
+                let tarBlob = TarBlobView(rect, row: column, column: row)
+                tarBlob.delegate = self
                 gameBoard.addSubview(tarBlob)
                 
-                let key = "\(i)|\(j)"
+                let key = "\(row)|\(column)"
                 cells[key] = tarBlob
             }
         }
@@ -55,4 +51,13 @@ class ViewController: UIViewController {
         cells["\(i)|\(j)"]?.backgroundColor = bluesTurn ? .systemBlue:.systemPink
         bluesTurn = !bluesTurn
     }
+}
+
+extension ViewController: TarBlobViewDelegate {
+    func didTapTarBlob(tarBlobView: TarBlobView) {
+        print("tapped \(tarBlobView.row), \(tarBlobView.column)")
+        tarBlobView.backgroundColor = UIColor.systemBlue
+    }
+    
+    
 }
