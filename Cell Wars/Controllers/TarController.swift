@@ -22,7 +22,7 @@ class TarController {
     
     // MARK: Properties
     
-    private var selectedTar: Tar?
+    var selectedTar: Tar?
     private var filledSquareCount = 63
     
     weak var delegate: TarControllerDelegate?

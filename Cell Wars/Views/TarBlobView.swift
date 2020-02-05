@@ -13,15 +13,13 @@ protocol TarBlobViewDelegate: class {
 
 class TarBlobView: UIView {
 
-    let row: Int
-    let column: Int
+    let index: TarIndex
     var tar: Tar
     weak var delegate: TarBlobViewDelegate?
 
-    init(_ rect: CGRect, row: Int, column: Int) {
+    init(_ rect: CGRect, index: TarIndex) {
         // Drawing code
-        self.row = row
-        self.column = column
+        self.index = index
         self.tar = Tar()
         super.init(frame: rect)
         self.layer.borderWidth = 1
