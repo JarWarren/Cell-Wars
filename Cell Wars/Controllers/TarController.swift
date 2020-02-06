@@ -23,12 +23,19 @@ class TarController {
     
     // MARK: - Properties
     
-    var selectedIndex: TarIndex?
-    private var filledSquareCount = 63
+    private var filledSquareCount = 4
+    private let singlePlayer: Bool
     
     weak var delegate: TarControllerDelegate?
+    var selectedIndex: TarIndex?
     var board: [String: Tar] = [:]
     var currentPlayer: Faction = .blue
+    
+    // MARK: - Initializer
+    
+    init(singlePlayer: Bool) {
+        self.singlePlayer = singlePlayer
+    }
     
     // MARK: - Gameplay Methods
     
@@ -145,7 +152,8 @@ class TarController {
         // set tar color to current
         for row in (index.row - 1)...(index.row + 1) where (0...7) ~= row {
             for column in (index.column - 1)...(index.column + 1) where (0...7) ~= column {
-                if let tar = board["\((row, column))"],
+                if let tar = board["\(TarIndex(row, column))"],
+                    row != index.row || column != index.column,
                     tar.faction != nil {
                     tar.faction = currentPlayer
                     updatedTars.append(((row, column), tar))
