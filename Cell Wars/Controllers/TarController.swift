@@ -38,7 +38,7 @@ class TarController {
         filledSquareCount = 4
         for row in 0...7 {
             for column in 0...7 {
-                board["\(row)|\(column)"] = Tar()
+                board["\((row, column))"] = Tar()
             }
         }
         board["\((0, 0))"]?.faction = .blue
