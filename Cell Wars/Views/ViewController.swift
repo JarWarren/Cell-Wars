@@ -35,7 +35,7 @@ class ViewController: UIViewController {
                 let tarBlob = TarBlobView(rect, index: (row, column))
                 tarBlob.delegate = self
                 gameBoard.addSubview(tarBlob)
-                let key = "\((row, column))"
+                let key = "\(TarIndex(row, column))"
                 cells[key] = tarBlob
             }
         }
@@ -43,13 +43,12 @@ class ViewController: UIViewController {
         for tar in tarController.board {
             switch tar.value.faction {
             case .blue:
-                cells[tar.key]?.backgroundColor = .systemBlue
+                cells[tar.key]?.tar = Tar(faction: .blue)
             case .pink:
-                cells[tar.key]?.backgroundColor = .systemPink
+                cells[tar.key]?.tar = Tar(faction: .pink)
             default:
-                cells[tar.key]?.backgroundColor = .clear
+                cells[tar.key]?.tar = Tar(faction: nil)
             }
-            print("Reset")
         }
     }
     @IBAction func restartPressed(_ sender: Any) {

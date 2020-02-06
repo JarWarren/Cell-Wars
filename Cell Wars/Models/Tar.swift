@@ -10,6 +10,10 @@ import Foundation
 
 class Tar {
     var faction: Faction?
+    
+    init(faction: Faction?) {
+        self.faction = faction
+    }
 }
 
 enum Faction {
