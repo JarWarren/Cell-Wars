@@ -27,6 +27,8 @@ class ViewController: UIViewController {
     }
     
     func newGame() {
+        cells.removeAll()
+        gameBoard.subviews.forEach { $0.removeFromSuperview() }
         let width = (gameBoard.frame.width) / CGFloat(numViewPerRow)
         tarController.newGame()
         for row in 0...numViewPerRow {
@@ -74,6 +76,9 @@ extension ViewController: TarBlobViewDelegate {
                 for tarBlob in tarController.moveTo(tarBlobView.index) {
                     cells["\(tarBlob.index)"]?.tar = tarBlob.tar
                 }
+            }
+            for tar in cells where tar.value.tar.faction == nil {
+                tar.value.tar = Tar(faction: nil)
             }
         }
     }
