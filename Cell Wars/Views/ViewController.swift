@@ -104,12 +104,16 @@ extension ViewController: TarBlobViewDelegate {
 }
 
 extension ViewController: TarControllerDelegate {
-    func computerPlayerDidMove(updatedTars: [(index: TarIndex, tar: Tar)]) {
-        DispatchQueue.main.async {
-            
+    func computerPlayerDidMove(move: TarIndex) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            guard let tarBlobView = self.cells["\(move)"] else {return}
             print("computer moved")
-            print(updatedTars)
-        }
+            print(move)
+            for tarBlob in self.tarController.moveTo(tarBlobView.index) {
+                self.cells["\(tarBlob.index)"]?.tar = tarBlob.tar
+            }
+            self.updateScoresAndTurn()
+        })
     }
     
     func gameDidEnd(winningFaction: Faction?) {
