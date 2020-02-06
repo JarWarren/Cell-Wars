@@ -19,7 +19,7 @@ protocol TarControllerDelegate: AnyObject {
     func gameDidEnd(winningFaction: Faction?)
     
     /// Called by TarController between turns. Returns the indexes of `Tar` that need to be updated on the UI.
-    func computerPlayerDidMove(updatedTars: [(index: TarIndex, tar: Tar)])
+    func computerPlayerDidMove(move: TarIndex)
 }
 
 // MARK: - Tar Controller
@@ -283,7 +283,6 @@ class TarController {
         }
         
         // Find index of best move, call moveTo(index:) and pass result to delegate
-        let updatedTars = moveTo(bestMove)
-        delegate?.computerPlayerDidMove(updatedTars: updatedTars)
+        delegate?.computerPlayerDidMove(move: bestMove)
     }
 }
