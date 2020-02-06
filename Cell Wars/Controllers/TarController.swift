@@ -4,7 +4,7 @@
 //
 //  Created by Jared Warren on 2/5/20.
 //  Copyright © 2020 Warren. All rights reserved.
-//  swiftlint:disable for_where
+//
 
 import Foundation
 
@@ -30,6 +30,8 @@ class TarController {
     var selectedIndex: TarIndex?
     var board: [String: Tar] = [:]
     var currentPlayer: Faction = .blue
+    var pinkCount = 2
+    var blueCount = 2
     
     // MARK: - Initializer
     
@@ -44,6 +46,8 @@ class TarController {
         selectedIndex = nil
         currentPlayer = .blue
         filledSquareCount = 4
+        pinkCount = 2
+        blueCount = 2
         for row in 0...7 {
             for column in 0...7 {
                 board["\(TarIndex(row, column))"] = Tar(faction: nil)
@@ -199,3 +203,14 @@ class TarController {
         }
     }
 }
+
+/*
+ FIXME:
+ Top right corner never despawns, even after teleport
+ 
+ */
+
+/*
+ TODO:
+ Keep track of blueCount and pinkCount
+ */
