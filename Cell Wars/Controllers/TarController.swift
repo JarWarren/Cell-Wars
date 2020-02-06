@@ -97,13 +97,11 @@ class TarController {
         
         // Check whether the move is within duplicating range or Tar needs to teleport.
         if abs(targetIndex.row - selectedIndex.row) < 2 && abs(targetIndex.column - selectedIndex.column) < 2 {
-            duplicateTar(at: targetIndex)
+            return duplicateTar(at: targetIndex)
             
         } else {
-            teleportTar(to: targetIndex)
+            return teleportTar(to: targetIndex)
         }
-        
-        return []
     }
     
     /// Nils out the currently selected Tar.
@@ -113,10 +111,10 @@ class TarController {
     
     // MARK: - Private Methods
     
-    private func teleportTar(to targetIndex: TarIndex) {
+    private func teleportTar(to targetIndex: TarIndex) -> [(index: TarIndex, tar: Tar)] {
         
         // Cannot perform move if there isn't a previously selected tar
-        guard let selectedIndex = selectedIndex else { return }
+        guard let selectedIndex = selectedIndex else { return [] }
         
         // remove tar from selected index
         board["\(selectedIndex)"]?.faction = .none
@@ -125,10 +123,10 @@ class TarController {
         board["\(targetIndex)"]?.faction = currentPlayer
         
         // capture adjacents to target index
-        captureAdjacents(index: targetIndex)
+        return captureAdjacents(index: targetIndex)
     }
     
-    private func duplicateTar(at targetIndex: TarIndex) {
+    private func duplicateTar(at targetIndex: TarIndex) -> [(index: TarIndex, tar: Tar)] {
         
         // add tar to target index
         board["\(targetIndex)"]?.faction = currentPlayer
@@ -137,24 +135,28 @@ class TarController {
         filledSquareCount += 1
         
         // capture adjacents to the target index
-        captureAdjacents(index: targetIndex)
-        
+        return captureAdjacents(index: targetIndex)
     }
     
-    private func captureAdjacents(index: TarIndex) {
+    private func captureAdjacents(index: TarIndex) -> [(index: TarIndex, tar: Tar)] {
+        var updatedTars: [(index: TarIndex, tar: Tar)] = []
         
         // set tar color to current
-        for row in (index.row - 1)...(index.row + 1) {
-            for column in (index.column - 1)...(index.column + 1) {
-                let tar = board["\((row, column))"]
-                if tar?.faction != nil {
-                    tar?.faction = currentPlayer
+        for row in (index.row - 1)...(index.row + 1) where (0...7) ~= row {
+            for column in (index.column - 1)...(index.column + 1) where (0...7) ~= column {
+                if let tar = board["\((row, column))"],
+                    tar.faction != nil {
+                    tar.faction = currentPlayer
+                    updatedTars.append(((row, column), tar))
                 }
             }
         }
         
         // Check for victory
         checkForWin()
+        
+        // Uhh... this might cause a bug
+        return updatedTars
     }
     
     private func nextTurn() {
