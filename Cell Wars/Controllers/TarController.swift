@@ -138,6 +138,7 @@ class TarController {
     // MARK: - Private Methods
     
     private func teleportTar(to targetIndex: TarIndex) -> [(index: TarIndex, tar: Tar)] {
+        print("teleported")
         
         // Cannot perform move if there isn't a previously selected tar
         guard let selectedIndex = selectedIndex else { return [] }
@@ -155,6 +156,7 @@ class TarController {
     }
     
     private func duplicateTar(at targetIndex: TarIndex) -> [(index: TarIndex, tar: Tar)] {
+        print("duplicated")
         
         // add tar to target index
         board["\(targetIndex)"]?.faction = currentPlayer
@@ -239,6 +241,7 @@ class TarController {
     
     private func findBestMoveForComputerPlayer() {
         var bestMove = TarIndex(0, 0)
+        var from = TarIndex(0, 0)
         var highestCaptureCount = 0
         var captureCount = 0
         
@@ -261,6 +264,7 @@ class TarController {
                         if captureCount > highestCaptureCount {
                             highestCaptureCount = captureCount
                             bestMove = move
+                            from = index
                         }
                     }
                     
@@ -276,6 +280,7 @@ class TarController {
                         if captureCount > highestCaptureCount {
                             highestCaptureCount = captureCount
                             bestMove = move
+                            from = index
                         }
                     }
                 }
@@ -283,7 +288,7 @@ class TarController {
         }
         
         // Find index of best move, call moveTo(index:) and pass result to delegate
-        selectedIndex = bestMove
+        selectedIndex = from
         delegate?.computerPlayerDidMove(move: bestMove)
     }
 }
