@@ -61,6 +61,8 @@ class TarController {
     
     /// Pass in a `(row, column)` and receive an array `[(row, column)]` for all viable moves.
     func getViableMoves(index: TarIndex) -> (duplicate: [TarIndex], teleport: [TarIndex]) {
+        guard board["\(index)"]?.faction == .some(currentPlayer) else { return ([], []) }
+        
         // hold all viable moves
         var viableMoves: [TarIndex] = []
         
