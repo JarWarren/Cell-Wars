@@ -147,6 +147,11 @@ class TarController {
         
         // update filled tar counts
         filledSquareCount += 1
+        if currentPlayer == .blue {
+            blueCount += 1
+        } else {
+            pinkCount += 1
+        }
         
         // capture adjacents to the target index
         return captureAdjacents(index: targetIndex)
@@ -160,6 +165,19 @@ class TarController {
             for column in (index.column - 1)...(index.column + 1) where (0...7) ~= column {
                 if let tar = board["\(TarIndex(row, column))"],
                     tar.faction != nil {
+                    
+                    if tar.faction != currentPlayer {
+                        if currentPlayer == .blue {
+                            blueCount += 1
+                            pinkCount -= 1
+                        } else {
+                            pinkCount += 1
+                            blueCount -= 1
+                        }
+                    }
+                    
+                    print(blueCount, pinkCount)
+                    
                     tar.faction = currentPlayer
                     updatedTars.append(((row, column), tar))
                 }
@@ -183,6 +201,10 @@ class TarController {
     }
     
     private func checkForWin() {
+        
+        if blueCount == 0 { delegate?.gameDidEnd(winningFaction: .pink) }
+        if pinkCount == 0 { delegate?.gameDidEnd(winningFaction: .blue) }
+        
         if filledSquareCount == 64 {
             // Count how many tars are blue (out of 64)
             let blueTars = board.values.filter { $0.faction == .some(.blue) }
@@ -208,7 +230,7 @@ class TarController {
 
 /*
  FIXME:
- Top right corner never despawns, even after teleport
+ Game should end early if either player is eradicated
  
  */
 
