@@ -61,7 +61,19 @@ class ViewController: UIViewController {
 extension ViewController: TarBlobViewDelegate {
     func didTapTarBlob(tarBlobView: TarBlobView) {
         print("tapped \(tarBlobView.index)")
-        if tarBlobView.tar.faction == tarController.currentPlayer && tarController.selectedIndex == nil {
+        if tarController.selectedIndex != nil {
+            guard let backgroundColor = tarBlobView.backgroundColor else {return}
+            if backgroundColor == .lightGray || backgroundColor == .darkGray {
+                for tarBlob in tarController.moveTo(tarBlobView.index) {
+                    cells["\(tarBlob.index)"]?.tar = tarBlob.tar
+                }
+            } else {
+                tarController.cancelMove()
+            }
+            for tar in cells where tar.value.tar.faction == nil {
+                tar.value.tar = Tar(faction: nil)
+            }
+        } else if tarBlobView.tar.faction == tarController.currentPlayer {
             let viableMoves = tarController.getViableMoves(index: tarBlobView.index)
             
             for tarBlob in viableMoves.duplicate {
@@ -69,16 +81,6 @@ extension ViewController: TarBlobViewDelegate {
             }
             for tarBlob in viableMoves.teleport {
                 cells["\(tarBlob)"]?.backgroundColor = .lightGray
-            }
-        } else {
-            guard let backgroundColor = tarBlobView.backgroundColor else {return}
-            if backgroundColor == .lightGray || backgroundColor == .darkGray {
-                for tarBlob in tarController.moveTo(tarBlobView.index) {
-                    cells["\(tarBlob.index)"]?.tar = tarBlob.tar
-                }
-            }
-            for tar in cells where tar.value.tar.faction == nil {
-                tar.value.tar = Tar(faction: nil)
             }
         }
     }
