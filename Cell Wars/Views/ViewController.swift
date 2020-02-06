@@ -97,6 +97,14 @@ extension ViewController: TarBlobViewDelegate {
 }
 
 extension ViewController: TarControllerDelegate {
+    func computerPlayerDidMove(updatedTars: [(index: TarIndex, tar: Tar)]) {
+        DispatchQueue.main.async {
+            
+            print("computer moved")
+            print(updatedTars)
+        }
+    }
+    
     func gameDidEnd(winningFaction: Faction?) {
         var winner: String = ""
         switch winningFaction {
