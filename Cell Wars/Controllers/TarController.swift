@@ -20,7 +20,7 @@ protocol TarControllerDelegate: AnyObject {
 
 class TarController {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     var selectedIndex: TarIndex?
     private var filledSquareCount = 63
@@ -29,7 +29,7 @@ class TarController {
     var board: [String: Tar] = [:]
     var currentPlayer: Faction = .blue
     
-    // MARK: Gameplay Methods
+    // MARK: - Gameplay Methods
     
     /// Fills `board` with 64 empty `Tar`.
     func newGame() {
@@ -41,10 +41,10 @@ class TarController {
                 board["\(row)|\(column)"] = Tar()
             }
         }
-        board["\((0,0))"]?.faction = .blue
-        board["\((0,7))"]?.faction = .blue
-        board["\((7,0))"]?.faction = .pink
-        board["\((7,7))"]?.faction = .pink
+        board["\((0, 0))"]?.faction = .blue
+        board["\((0, 7))"]?.faction = .blue
+        board["\((7, 0))"]?.faction = .pink
+        board["\((7, 7))"]?.faction = .pink
     }
     
     /// Pass in a `(row, column)` and receive an array `[(row, column)]` for all viable moves.
@@ -111,7 +111,7 @@ class TarController {
         selectedIndex = nil
     }
     
-    // MARK: Private Methods
+    // MARK: - Private Methods
     
     private func teleportTar(to targetIndex: TarIndex) {
         
@@ -133,6 +133,9 @@ class TarController {
         // add tar to target index
         board["\(targetIndex)"]?.faction = currentPlayer
         
+        // update filled tar counts
+        filledSquareCount += 1
+        
         // capture adjacents to the target index
         captureAdjacents(index: targetIndex)
         
@@ -141,6 +144,14 @@ class TarController {
     private func captureAdjacents(index: TarIndex) {
         
         // set tar color to current
+        for row in (index.row - 1)...(index.row + 1) {
+            for column in (index.column - 1)...(index.column + 1) {
+                let tar = board["\((row, column))"]
+                if tar?.faction != nil {
+                    tar?.faction = currentPlayer
+                }
+            }
+        }
         
         // Check for victory
         checkForWin()
