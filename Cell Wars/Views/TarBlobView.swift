@@ -24,6 +24,7 @@ class TarBlobView: UIView {
             default:
                 self.backgroundColor = .clear
             }
+            print("Updated colors")
         }
     }
     weak var delegate: TarBlobViewDelegate?
@@ -31,7 +32,7 @@ class TarBlobView: UIView {
     init(_ rect: CGRect, index: TarIndex) {
         // Drawing code
         self.index = index
-        self.tar = Tar()
+        self.tar = Tar(faction: nil)
         super.init(frame: rect)
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.white.cgColor
