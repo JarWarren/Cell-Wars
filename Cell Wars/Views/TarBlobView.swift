@@ -24,7 +24,6 @@ class TarBlobView: UIView {
             default:
                 self.backgroundColor = .clear
             }
-            print("Updated colors")
         }
     }
     weak var delegate: TarBlobViewDelegate?

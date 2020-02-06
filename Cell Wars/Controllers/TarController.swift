@@ -14,6 +14,8 @@ typealias TarIndex = (row: Int, column: Int)
 
 /// Receives updates from a TarController.
 protocol TarControllerDelegate: AnyObject {
+    
+    /// Returns the faction that won, or `nil` if it was a draw.
     func gameDidEnd(winningFaction: Faction?)
 }
 
@@ -23,7 +25,6 @@ class TarController {
     
     // MARK: - Properties
     
-    private var filledSquareCount = 4
     private let singlePlayer: Bool
     
     weak var delegate: TarControllerDelegate?
@@ -45,7 +46,6 @@ class TarController {
     func newGame() {
         selectedIndex = nil
         currentPlayer = .blue
-        filledSquareCount = 4
         pinkCount = 2
         blueCount = 2
         for row in 0...7 {
@@ -138,7 +138,7 @@ class TarController {
         
         // capture adjacents to target index
         var updatedTars = captureAdjacents(index: targetIndex)
-        updatedTars.append((index: selectedIndex , tar: Tar(faction: nil)))
+        updatedTars.append((index: selectedIndex, tar: Tar(faction: nil)))
         return updatedTars
     }
     
@@ -147,8 +147,7 @@ class TarController {
         // add tar to target index
         board["\(targetIndex)"]?.faction = currentPlayer
         
-        // update filled tar counts
-        filledSquareCount += 1
+        // update tar counts
         if currentPlayer == .blue {
             blueCount += 1
         } else {
@@ -207,10 +206,7 @@ class TarController {
         if blueCount == 0 { delegate?.gameDidEnd(winningFaction: .pink) }
         if pinkCount == 0 { delegate?.gameDidEnd(winningFaction: .blue) }
         
-        if filledSquareCount == 64 {
-            // Count how many tars are blue (out of 64)
-            let blueTars = board.values.filter { $0.faction == .some(.blue) }
-            let blueCount = blueTars.count
+        if blueCount + pinkCount >= 64 {
             
             // Different victory scenarios
             switch blueCount {
@@ -229,14 +225,3 @@ class TarController {
         }
     }
 }
-
-/*
- FIXME:
- Game should end early if either player is eradicated
- 
- */
-
-/*
- TODO:
- Keep track of blueCount and pinkCount
- */
