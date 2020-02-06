@@ -137,7 +137,9 @@ class TarController {
         board["\(targetIndex)"]?.faction = currentPlayer
         
         // capture adjacents to target index
-        return captureAdjacents(index: targetIndex)
+        var updatedTars = captureAdjacents(index: targetIndex)
+        updatedTars.append((index: selectedIndex , tar: Tar(faction: nil)))
+        return updatedTars
     }
     
     private func duplicateTar(at targetIndex: TarIndex) -> [(index: TarIndex, tar: Tar)] {
