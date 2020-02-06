@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
     let numViewPerRow = 8
     var cells = [String: TarBlobView]()
-    let tarController = TarController(singlePlayer: false)
+    var tarController = TarController(singlePlayer: false)
     
     override func viewDidLoad() {
         super.viewDidLoad()
