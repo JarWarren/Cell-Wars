@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         gameBoard.clipsToBounds = true
+        tarController.delegate = self
         newGame()
     }
     
@@ -31,6 +32,7 @@ class ViewController: UIViewController {
         gameBoard.subviews.forEach { $0.removeFromSuperview() }
         let width = (gameBoard.frame.width) / CGFloat(numViewPerRow)
         tarController.newGame()
+        updateScoresAndTurn()
         for row in 0...numViewPerRow {
             for column in 0...numViewPerRow {
                 let rect = CGRect(x: CGFloat(column) * width, y: CGFloat(row) * width, width: width, height: width)
@@ -56,6 +58,8 @@ class ViewController: UIViewController {
     
     func updateScoresAndTurn() {
         playerTurnLabel.text = tarController.currentPlayer == .blue ? "Blue's Turn" : "Pink's Turn"
+        blueScore.text = "Blue Score: \(tarController.blueCount)"
+        pinkScore.text = "Pink Score: \(tarController.pinkCount)"
     }
     
     @IBAction func restartPressed(_ sender: Any) {
@@ -89,5 +93,27 @@ extension ViewController: TarBlobViewDelegate {
                 cells["\(tarBlob)"]?.backgroundColor = .lightGray
             }
         }
+    }
+}
+
+extension ViewController: TarControllerDelegate {
+    func gameDidEnd(winningFaction: Faction?) {
+        var winner: String = ""
+        switch winningFaction {
+        case .blue:
+            winner = "Blue Won!"
+        case .pink:
+            winner = "Pink Won!"
+        default:
+            winner = "Tie Game!"
+        }
+        let alert = UIAlertController(title: winner, message: "Play Again?", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (_) in
+            self.newGame()
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+
+        self.present(alert, animated: true)
     }
 }
