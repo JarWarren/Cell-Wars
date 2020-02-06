@@ -13,10 +13,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameBoard: UIView!
     @IBOutlet weak var blueScore: UILabel!
     @IBOutlet weak var pinkScore: UILabel!
+    @IBOutlet weak var playerTurnLabel: UILabel!
     
     let numViewPerRow = 8
     var cells = [String: TarBlobView]()
-    var bluesTurn: Bool = true
     let tarController = TarController(singlePlayer: false)
     
     override func viewDidLoad() {
@@ -53,6 +53,11 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    func updateScoresAndTurn() {
+        playerTurnLabel.text = tarController.currentPlayer == .blue ? "Blue's Turn" : "Pink's Turn"
+    }
+    
     @IBAction func restartPressed(_ sender: Any) {
         newGame()
     }
@@ -64,10 +69,10 @@ extension ViewController: TarBlobViewDelegate {
         if tarController.selectedIndex != nil {
             guard let backgroundColor = tarBlobView.backgroundColor else {return}
             if backgroundColor == .lightGray || backgroundColor == .darkGray {
-                
                 for tarBlob in tarController.moveTo(tarBlobView.index) {
                     cells["\(tarBlob.index)"]?.tar = tarBlob.tar
                 }
+                updateScoresAndTurn()
             } else {
                 tarController.cancelMove()
             }
