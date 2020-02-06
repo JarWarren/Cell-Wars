@@ -250,7 +250,7 @@ class TarController {
                     let viableMoves = getViableMoves(index: index)
                     
                     for move in viableMoves.duplicate {
-                        captureCount = 0
+                        captureCount = 1
                         for row in (move.row - 1)...(move.row + 1) where (0...7) ~= row {
                             for column in (move.column - 1)...(move.column + 1) where (0...7) ~= column {
                                 if board["\(TarIndex(row, column))"]?.faction == .blue {
@@ -265,7 +265,7 @@ class TarController {
                     }
                     
                     for move in viableMoves.teleport {
-                        captureCount = -1
+                        captureCount = 0
                         for row in (move.row - 1)...(move.row + 1) where (0...7) ~= row {
                             for column in (move.column - 1)...(move.column + 1) where (0...7) ~= column {
                                 if board["\(TarIndex(row, column))"]?.faction == .blue {
@@ -283,6 +283,7 @@ class TarController {
         }
         
         // Find index of best move, call moveTo(index:) and pass result to delegate
+        selectedIndex = bestMove
         delegate?.computerPlayerDidMove(move: bestMove)
     }
 }
