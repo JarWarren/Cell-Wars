@@ -4,7 +4,7 @@
 //
 //  Created by Jared Warren on 2/5/20.
 //  Copyright © 2020 Warren. All rights reserved.
-//
+//  swiftlint:disable cyclomatic_complexity
 
 import Foundation
 
@@ -17,6 +17,9 @@ protocol TarControllerDelegate: AnyObject {
     
     /// Returns the faction that won, or `nil` if it was a draw.
     func gameDidEnd(winningFaction: Faction?)
+    
+    /// Called by TarController between turns. Returns the indexes of `Tar` that need to be updated on the UI.
+    func computerPlayerDidMove(updatedTars: [(index: TarIndex, tar: Tar)])
 }
 
 // MARK: - Tar Controller
@@ -105,6 +108,15 @@ class TarController {
     
     /// Takes in a `(row, column)`and performs either duplication or teleportation.  Returns an array `[(TarIndex, Tar)]` for squares that need to be updated.
     func moveTo(_ targetIndex: TarIndex) -> [(index: TarIndex, tar: Tar)] {
+        
+        // Called after return, calculates computer player's move on a background thread and notifies delegate
+        defer {
+            if !singlePlayer && currentPlayer == .pink {
+                DispatchQueue.global(qos: .background).async {
+                    self.findBestMoveForComputerPlayer()
+                }
+            }
+        }
         
         // Cannot perform move if there isn't a previously selected tar
         guard let selectedIndex = selectedIndex else { return [] }
@@ -223,5 +235,55 @@ class TarController {
         } else {
             nextTurn()
         }
+    }
+    
+    private func findBestMoveForComputerPlayer() {
+        var bestMove = TarIndex(0, 0)
+        var highestCaptureCount = 0
+        var captureCount = 0
+        
+        for row in 0...7 {
+            for column in 0...7 {
+                let index = TarIndex(row, column)
+                let key = "\(index)"
+                if board[key]?.faction == .some(.pink) {
+                    let viableMoves = getViableMoves(index: index)
+                    
+                    for move in viableMoves.duplicate {
+                        captureCount = 0
+                        for row in (move.row - 1)...(move.row + 1) where (0...7) ~= row {
+                            for column in (move.column - 1)...(move.column + 1) where (0...7) ~= column {
+                                if board["\(TarIndex(row, column))"]?.faction == .blue {
+                                    captureCount += 1
+                                }
+                            }
+                        }
+                        if captureCount > highestCaptureCount {
+                            highestCaptureCount = captureCount
+                            bestMove = move
+                        }
+                    }
+                    
+                    for move in viableMoves.teleport {
+                        captureCount = -1
+                        for row in (move.row - 1)...(move.row + 1) where (0...7) ~= row {
+                            for column in (move.column - 1)...(move.column + 1) where (0...7) ~= column {
+                                if board["\(TarIndex(row, column))"]?.faction == .blue {
+                                    captureCount += 1
+                                }
+                            }
+                        }
+                        if captureCount > highestCaptureCount {
+                            highestCaptureCount = captureCount
+                            bestMove = move
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Find index of best move, call moveTo(index:) and pass result to delegate
+        let updatedTars = moveTo(bestMove)
+        delegate?.computerPlayerDidMove(updatedTars: updatedTars)
     }
 }
