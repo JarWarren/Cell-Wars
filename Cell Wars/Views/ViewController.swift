@@ -64,6 +64,7 @@ extension ViewController: TarBlobViewDelegate {
         if tarController.selectedIndex != nil {
             guard let backgroundColor = tarBlobView.backgroundColor else {return}
             if backgroundColor == .lightGray || backgroundColor == .darkGray {
+                
                 for tarBlob in tarController.moveTo(tarBlobView.index) {
                     cells["\(tarBlob.index)"]?.tar = tarBlob.tar
                 }
