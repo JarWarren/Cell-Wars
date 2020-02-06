@@ -70,7 +70,7 @@ class TarController {
         // search 20+ nearest squares for emptiness
         for row in (index.row - 2)...(index.row + 2) {
             for column in (index.column - 2)...(index.column + 2) {
-                if board["\(row)|\(column)"]?.faction == .none {
+                if board["\(TarIndex(row, column))"]?.faction == .none {
                     viableMoves.append((row, column))
                 }
             }
