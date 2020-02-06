@@ -76,8 +76,8 @@ class TarController {
             }
         }
         
-        // filter to see if they exist on the board
-        viableMoves = viableMoves.filter { $0.column >= 0 && $0.row >= 0 }
+        // filter to see if they exist on the board (and aren't the original index)
+        viableMoves = viableMoves.filter { $0.column >= 0 && $0.row >= 0 && ($0.row != index.row || $0.column != index.column) }
         
         // filter viable moves to determine tar behavior
         duplicatingMoves = viableMoves.filter { move in
@@ -153,7 +153,6 @@ class TarController {
         for row in (index.row - 1)...(index.row + 1) where (0...7) ~= row {
             for column in (index.column - 1)...(index.column + 1) where (0...7) ~= column {
                 if let tar = board["\(TarIndex(row, column))"],
-                    row != index.row || column != index.column,
                     tar.faction != nil {
                     tar.faction = currentPlayer
                     updatedTars.append(((row, column), tar))
