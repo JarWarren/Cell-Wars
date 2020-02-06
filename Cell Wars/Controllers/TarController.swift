@@ -12,6 +12,7 @@ typealias TarIndex = (row: Int, column: Int)
 
 // MARK: - Tar Controller Delegate
 
+/// Receives updates from a TarController.
 protocol TarControllerDelegate: AnyObject {
     func gameDidEnd(winningFaction: Faction?)
 }
@@ -71,10 +72,10 @@ class TarController {
         // filter to see if they exist on the board
         viableMoves = viableMoves.filter { $0.column >= 0 && $0.row >= 0 }
         
-        // filter viable moves to see if they're teleporting or not
+        // filter viable moves to determine tar behavior
         duplicatingMoves = viableMoves.filter { move in
             
-            // Both row AND column must be within 1 of the target index
+            // Both row AND column must be within 1 of the target index in order to duplicate
             (index.row - 1)...(index.row + 1) ~= move.row &&
                 (index.column - 1)...(index.column + 1) ~= move.column
         }
