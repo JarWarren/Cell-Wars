@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         newGame()
     }
     
-    // Resets board and score
+    /// Resets board and score
     func newGame() {
         //Clears board
         cells.removeAll()
@@ -51,7 +51,7 @@ class ViewController: UIViewController {
                 cells[key] = tarBlob
             }
         }
-        //Setting Colors for TarBlobViews
+        ///Setting Colors for TarBlobViews
         for tar in tarController.board {
             switch tar.value.faction {
             case .blue:
@@ -59,19 +59,19 @@ class ViewController: UIViewController {
             case .pink:
                 cells[tar.key]?.tar = Tar(faction: .pink)
             default:
-                cells[tar.key]?.tar = Tar(faction: nil)
+                cells[tar.key]?.tar = Tar(faction: .none)
             }
         }
     }
-    /**
-     Updates Turn label and score labels
-     */
+    
+     ///Updates Turn label and score labels
     func updateScoresAndTurn() {
         playerTurnLabel.text = tarController.currentPlayer == .blue ? "Blue's Turn" : "Pink's Turn"
         blueScore.text = "Blue Score: \(tarController.blueCount)"
         pinkScore.text = "Pink Score: \(tarController.pinkCount)"
     }
-    //calls newGameWhenPressed
+    
+    ///calls newGameWhenPressed
     @IBAction func restartPressed(_ sender: Any) {
         newGame()
     }

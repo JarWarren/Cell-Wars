@@ -12,22 +12,30 @@ protocol TarBlobViewDelegate: class {
 }
 
 class TarBlobView: UIView {
-
+    
     let index: TarIndex
     var tar: Tar {
         didSet {
-            switch tar.faction {
-            case .blue:
-                self.backgroundColor = .systemBlue
-            case .pink:
-                self.backgroundColor = .systemPink
-            default:
+            let transitionOptions: UIView.AnimationOptions = [.transitionFlipFromRight, .showHideTransitionViews]
+            
+            if (self.tar.faction == .blue || self.tar.faction == .pink) && (!(self.backgroundColor == .systemBlue && self.tar.faction == .blue) || !(self.backgroundColor == .systemPink && self.tar.faction == .pink)) {
+                UIView.transition(with: self, duration: 1.0, options: transitionOptions, animations: {
+                    switch self.tar.faction {
+                    case .blue:
+                        self.backgroundColor = .systemBlue
+                    case .pink:
+                        self.backgroundColor = .systemPink
+                    default:
+                        self.backgroundColor = .clear
+                    }
+                })
+            } else {
                 self.backgroundColor = .clear
             }
         }
     }
     weak var delegate: TarBlobViewDelegate?
-
+    
     init(_ rect: CGRect, index: TarIndex) {
         // Drawing code
         self.index = index
